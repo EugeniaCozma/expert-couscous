@@ -3,31 +3,8 @@ import plotly.express as px
 import streamlit as st
 
 # Display title and text
-st.title("W1: Data and visualization using Numpy")
-st.markdown("Here you can see the dataframe created during this weeks project, and a map showing all the Airbnb listings: the blue dots represent listings close to the chosen location and the green dot represents the chosen location to visit. ")
-
-# Display dataframe
-st.dataframe(dataframe)
-
-# Create the plotly express figure
-fig = px.scatter_mapbox(
-    dataframe,
-    lat="Latitude",
-    lon="Longitude",
-    color="Location",
-    color_discrete_sequence=["green", "blue"],
-    zoom=11,
-    height=500,
-    width=800,
-    hover_name="Price: ",
-    hover_data=["Meters from chosen location", "Location: "],
-    labels={"color": "On the map: "},
-)
-fig.update_geos(center=dict(lat=dataframe.iloc[0][2], lon=dataframe.iloc[0][3]))
-fig.update_layout(mapbox_style="stamen-terrain")
-
-# Show the figure
-st.plotly_chart(fig, use_container_width=True)
+st.title("Week 1 - Data and visualization")
+st.markdown("Here we can see the dataframe created during this weeks project.")
 
 # Read dataframe
 dataframe = pd.read_csv(
@@ -52,6 +29,29 @@ dataframe["Airbnb Listing ID"] = dataframe["Airbnb Listing ID"].astype(int)
 dataframe["Price"] = "€ " + dataframe["Price"].round(2).astype(str) # <--- CHANGE THIS POUND SYMBOL IF YOU CHOSE CURRENCY OTHER THAN POUND
 # Rename the number to a string
 dataframe["Location"] = dataframe["Location"].replace(
-    {1.0: "On my bucket list", 0.0: "Airbnb property"}
+    {1.0: "To visit", 0.0: "Airbnb listing"}
 )
 
+# Display dataframe and text
+st.dataframe(dataframe)
+st.markdown("Below is a map showing all the Airbnb listings with a red dot and the location we've chosen with a blue dot.")
+
+# Create the plotly express figure
+fig = px.scatter_mapbox(
+    dataframe,
+    lat="Latitude: ",
+    lon="Longitude: ",
+    color="Location: ",
+    color_discrete_sequence=["green", "blue"],
+    zoom=11,
+    height=500,
+    width=800,
+    hover_name="Price: ",
+    hover_data=["Meters from chosen location", "Location: "],
+    labels={"color": "On the map: "},
+)
+fig.update_geos(center=dict(lat=dataframe.iloc[0][2], lon=dataframe.iloc[0][3]))
+fig.update_layout(mapbox_style="stamen-terrain")
+
+# Show the figure
+st.plotly_chart(fig, use_container_width=True)
