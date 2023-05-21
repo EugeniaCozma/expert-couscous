@@ -6,15 +6,12 @@ import streamlit as st
 st.title("W1: Data and visualization using Numpy")
 st.markdown("Here you can see the dataframe created during this weeks project, and a map showing all the Airbnb listings: the blue dots represent listings close to the chosen location and the green dot represents the chosen location to visit. ")
 
-# Display dataframe
-st.dataframe(dataframe)
-
 # Create the plotly express figure
 fig = px.scatter_mapbox(
     dataframe,
-    lat="Latitude",
-    lon="Longitude",
-    color="Location",
+    lat="Latitude: ",
+    lon="Longitude: ",
+    color="Location: ",
     color_discrete_sequence=["green", "blue"],
     zoom=11,
     height=500,
@@ -45,6 +42,8 @@ dataframe = pd.read_csv(
 # We have a limited budget, therefore we would like to exclude
 # listings with a price above 100 pounds per night
 dataframe = dataframe[dataframe["Price"] <= 100]
+
+st.dataframe(dataframe)
 
 # Display as integer
 dataframe["Airbnb Listing ID"] = dataframe["Airbnb Listing ID"].astype(int)
